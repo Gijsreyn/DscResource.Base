@@ -45,7 +45,7 @@ CopyPaths:
   - en-US
 Prefix: prefix.ps1
 Encoding: UTF8
-BuiltModuleSubdirectory: builtModule
+BuiltModuleSubdirectory: module
 
 ModuleBuildTasks:
   Sampler:

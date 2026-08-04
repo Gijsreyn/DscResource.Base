@@ -48,8 +48,14 @@ function New-DscResultTuple
         [System.Type[]]
         $Type,
 
+        <#
+            AllowNull() is required because a mandatory parameter is implicitly
+            validated as not null, and that validation rejects a collection that
+            contains a null element. A tuple element is allowed to be null.
+        #>
         [Parameter(Mandatory = $true)]
         [AllowEmptyCollection()]
+        [AllowNull()]
         [System.Object[]]
         $Value
     )
@@ -63,5 +69,19 @@ function New-DscResultTuple
 
     $closedTupleType = $openTupleType.MakeGenericType($Type)
 
-    return [System.Activator]::CreateInstance($closedTupleType, $Value)
+    $argumentList = [System.Object[]]::new($Value.Count)
+
+    for ($i = 0; $i -lt $Value.Count; $i++)
+    {
+        if ($null -eq $Value[$i])
+        {
+            $argumentList[$i] = $null
+        }
+        else
+        {
+            $argumentList[$i] = $Value[$i].PSObject.BaseObject
+        }
+    }
+
+    return [System.Activator]::CreateInstance($closedTupleType, $argumentList)
 }
