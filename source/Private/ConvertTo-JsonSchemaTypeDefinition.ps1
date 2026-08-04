@@ -41,39 +41,47 @@ function ConvertTo-JsonSchemaTypeDefinition
     if ($Type.IsEnum)
     {
         return ([ordered] @{
-                type = 'string'
-                enum = [System.String[]] ([System.Enum]::GetNames($Type))
-            })
+            type = 'string'
+            enum = [System.String[]] ([System.Enum]::GetNames($Type))
+        })
     }
 
     if ($Type.IsArray)
     {
         return ([ordered] @{
-                type  = 'array'
-                items = (ConvertTo-JsonSchemaTypeDefinition -Type $Type.GetElementType())
-            })
+            type  = 'array'
+            items = (ConvertTo-JsonSchemaTypeDefinition -Type $Type.GetElementType())
+        })
     }
 
     $typeDefinition = switch ($Type.FullName)
     {
         'System.String'
         {
-            [ordered] @{ type = 'string' }
+            [ordered] @{
+                type = 'string'
+            }
         }
 
         'System.Boolean'
         {
-            [ordered] @{ type = 'boolean' }
+            [ordered] @{
+                type = 'boolean'
+            }
         }
 
         { $_ -in @('System.Byte', 'System.SByte', 'System.Int16', 'System.UInt16', 'System.Int32', 'System.UInt32', 'System.Int64', 'System.UInt64') }
         {
-            [ordered] @{ type = 'integer' }
+            [ordered] @{
+                type = 'integer'
+            }
         }
 
         { $_ -in @('System.Single', 'System.Double', 'System.Decimal') }
         {
-            [ordered] @{ type = 'number' }
+            [ordered] @{
+                type = 'number'
+            }
         }
 
         'System.DateTime'
@@ -86,13 +94,17 @@ function ConvertTo-JsonSchemaTypeDefinition
 
         'System.Collections.Hashtable'
         {
-            [ordered] @{ type = 'object' }
+            [ordered] @{
+                type = 'object'
+            }
         }
 
         default
         {
             # Default to string for unknown types.
-            [ordered] @{ type = 'string' }
+            [ordered] @{
+                type = 'string'
+            }
         }
     }
 
