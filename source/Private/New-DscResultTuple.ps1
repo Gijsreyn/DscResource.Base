@@ -62,7 +62,14 @@ function New-DscResultTuple
 
     if ($Type.Count -ne $Value.Count)
     {
-        throw ($script:localizedData.NewDscResultTuple_CountMismatch -f $Type.Count, $Value.Count)
+        $PSCmdlet.ThrowTerminatingError(
+            [System.Management.Automation.ErrorRecord]::new(
+                ($script:localizedData.NewDscResultTuple_CountMismatch -f $Type.Count, $Value.Count),
+                'DRB0004',
+                [System.Management.Automation.ErrorCategory]::InvalidArgument,
+                $Type
+            )
+        )
     }
 
     $openTupleType = [System.Type] ('System.Tuple`{0}' -f $Type.Count)
