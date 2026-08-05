@@ -39,7 +39,7 @@
 #>
 function New-DscResultTuple
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('UseShouldProcessForStateChangingFunctions', '', Justification = 'The function does not change state, it only creates and returns a tuple object.')]
+    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'The function does not change state, it only creates and returns a tuple object.')]
     [CmdletBinding()]
     [OutputType([System.Object])]
     param
